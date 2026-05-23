@@ -114,10 +114,12 @@ export default function HomePage() {
               e.preventDefault();
               const uploadInput = document.getElementById('dashboard-file-upload');
               if (uploadInput) {
-                // Scroll down to the dashboard section so they see the loading state
-                document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
-                // Trigger the actual file upload logic
+                // Trigger file picker IMMEDIATELY so the browser doesn't block it
                 uploadInput.click();
+                // Then scroll down asynchronously
+                setTimeout(() => {
+                  document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
               }
             }}
           >
@@ -325,8 +327,12 @@ export default function HomePage() {
                   e.preventDefault();
                   const uploadInput = document.getElementById('dashboard-file-upload');
                   if (uploadInput) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll back up to see it
-                    setTimeout(() => uploadInput.click(), 500); // Wait for scroll to finish
+                    // Trigger file picker IMMEDIATELY
+                    uploadInput.click();
+                    // Scroll up asynchronously
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 100);
                   }
                 }}
               >

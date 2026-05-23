@@ -79,6 +79,7 @@ export default function HeroDashboardSection() {
     if (!files || files.length === 0) return;
     
     const file = files[0];
+    e.target.value = ''; // Reset so the same file can be re-selected if needed
     setLoading(true);
     setUploadProgress('Uploading report to secure storage...');
     
