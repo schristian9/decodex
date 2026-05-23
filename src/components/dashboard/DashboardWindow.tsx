@@ -24,10 +24,38 @@ export default function HeroDashboardSection() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   // Integration States
+  const [isYearly, setIsYearly] = useState(true);
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [latestReport, setLatestReport] = useState<any>(null);
   const [uploadProgress, setUploadProgress] = useState('');
+  
+  // Listen for file uploads triggered from other parts of the page (e.g. Hero buttons)
+  useEffect(() => {
+    const handleGlobalUpload = async (e: any) => {
+      const file = e.detail.file;
+      if (!file) return;
+      
+      setLoading(true);
+      setUploadProgress('Uploading report to secure storage...');
+      document.getElementById('dashboard-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      try {
+        const data = await api.reports.upload(file);
+        setLatestReport(data.report);
+        setUploadProgress('');
+      } catch (err: any) {
+        alert(err.message || 'Failed to upload and analyze your report. Please check the backend connection.');
+        setUploadProgress('');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    window.addEventListener('decode-upload', handleGlobalUpload);
+    return () => window.removeEventListener('decode-upload', handleGlobalUpload);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('decodedx_token');

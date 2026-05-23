@@ -108,22 +108,24 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.75, duration: 0.8 }}
         >
-          <button 
-            className="apple-button"
-            onClick={(e) => {
-              e.preventDefault();
-              const uploadInput = document.getElementById('dashboard-file-upload');
-              if (uploadInput) {
-                // Trigger file picker IMMEDIATELY so the browser doesn't block it
-                uploadInput.click();
-              }
-            }}
-          >
+          <label className="apple-button cursor-pointer">
             <span className="brand-icon">
               <Logo />
             </span>
             Upload Bloodwork
-          </button>
+            <input 
+              type="file" 
+              accept="application/pdf,image/*" 
+              className="absolute left-[-9999px]" 
+              onChange={(e) => {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                  window.dispatchEvent(new CustomEvent('decode-upload', { detail: { file: files[0] } }));
+                  e.target.value = ''; // reset
+                }
+              }}
+            />
+          </label>
         </motion.div>
       </section>
 
@@ -317,22 +319,24 @@ export default function HomePage() {
             <h2>Upload the report.<br />Understand what matters.</h2>
             <p style={{ color: 'rgba(255,255,255,0.95)' }}>Join individuals, clinicians, and labs turning raw biomarkers into clear, explainable health conversations.</p>
             <div className="final-actions content-spacing-margin">
-              <button 
-                className="apple-button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const uploadInput = document.getElementById('dashboard-file-upload');
-                  if (uploadInput) {
-                    // Trigger file picker IMMEDIATELY
-                    uploadInput.click();
-                  }
-                }}
-              >
+              <label className="apple-button cursor-pointer">
                 <span className="brand-icon">
                   <Logo />
                 </span>
                 Upload Bloodwork
-              </button>
+                <input 
+                  type="file" 
+                  accept="application/pdf,image/*" 
+                  className="absolute left-[-9999px]" 
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files && files.length > 0) {
+                      window.dispatchEvent(new CustomEvent('decode-upload', { detail: { file: files[0] } }));
+                      e.target.value = ''; // reset
+                    }
+                  }}
+                />
+              </label>
               <Link className="sales-btn" to="/contact">
                 Talk to clinics
                 <ChevronRight className="icon" />
