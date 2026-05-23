@@ -108,17 +108,24 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.75, duration: 0.8 }}
         >
-          <label className="apple-button cursor-pointer">
+          <button 
+            className="apple-button"
+            onClick={(e) => {
+              e.preventDefault();
+              const uploadInput = document.getElementById('dashboard-file-upload');
+              if (uploadInput) {
+                // Scroll down to the dashboard section so they see the loading state
+                document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
+                // Trigger the actual file upload logic
+                uploadInput.click();
+              }
+            }}
+          >
             <span className="brand-icon">
               <Logo />
             </span>
             Upload Bloodwork
-            <input type="file" accept="application/pdf,image/*" className="hidden" onChange={(e) => {
-               if (e.target.files?.length) {
-                 alert("File selected! Ready for AI processing.");
-               }
-            }} />
-          </label>
+          </button>
         </motion.div>
       </section>
 
@@ -312,17 +319,22 @@ export default function HomePage() {
             <h2>Upload the report.<br />Understand what matters.</h2>
             <p style={{ color: 'rgba(255,255,255,0.95)' }}>Join individuals, clinicians, and labs turning raw biomarkers into clear, explainable health conversations.</p>
             <div className="final-actions content-spacing-margin">
-              <label className="apple-button cursor-pointer">
+              <button 
+                className="apple-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const uploadInput = document.getElementById('dashboard-file-upload');
+                  if (uploadInput) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll back up to see it
+                    setTimeout(() => uploadInput.click(), 500); // Wait for scroll to finish
+                  }
+                }}
+              >
                 <span className="brand-icon">
                   <Logo />
                 </span>
                 Upload Bloodwork
-                <input type="file" accept="application/pdf,image/*" className="hidden" onChange={(e) => {
-                   if (e.target.files?.length) {
-                     alert("File selected! Ready for AI processing.");
-                   }
-                }} />
-              </label>
+              </button>
               <Link className="sales-btn" to="/contact">
                 Talk to clinics
                 <ChevronRight className="icon" />

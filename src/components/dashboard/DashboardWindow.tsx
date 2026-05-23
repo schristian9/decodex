@@ -207,6 +207,7 @@ export default function HeroDashboardSection() {
     >
       {/* Hidden input file element */}
       <input 
+        id="dashboard-file-upload"
         type="file" 
         ref={fileInputRef} 
         onChange={handleFileUpload} 
