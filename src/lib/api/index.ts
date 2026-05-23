@@ -1,4 +1,4 @@
-const rawApiUrl = import.meta.env.VITE_API_URL;
+const rawApiUrl = (import.meta as any).env?.VITE_API_URL;
 const API_BASE = rawApiUrl ? (rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`) : '/api';
 
 export function getAuthToken(): string | null {
@@ -35,15 +35,16 @@ async function request(endpoint: string, options: RequestInit = {}) {
   });
 
   let data;
+  let rawText = '';
   try {
-    const text = await response.text();
-    data = text ? JSON.parse(text) : {};
+    rawText = await response.text();
+    data = rawText ? JSON.parse(rawText) : {};
   } catch (err) {
-    throw new Error(`Server returned an invalid response. Status: ${response.status}`);
+    throw new Error(`Invalid response (Status ${response.status}): ${rawText.substring(0, 100)}`);
   }
 
   if (!response.ok) {
-    throw new Error(data.error || 'Something went wrong on the server');
+    throw new Error(data.error || `Server Error ${response.status}: ${rawText.substring(0, 100) || 'Empty response'}`);
   }
 
   return data;
