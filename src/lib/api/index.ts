@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL;
+const API_BASE = rawApiUrl ? (rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`) : '/api';
 
 export function getAuthToken(): string | null {
   return localStorage.getItem('decodedx_token');
@@ -33,9 +34,16 @@ async function request(endpoint: string, options: RequestInit = {}) {
     headers,
   });
 
-  const data = await response.json();
+  let data;
+  try {
+    const text = await response.text();
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    throw new Error(`Server returned an invalid response. Status: ${response.status}`);
+  }
+
   if (!response.ok) {
-    throw new Error(data.error || 'Something went wrong');
+    throw new Error(data.error || 'Something went wrong on the server');
   }
 
   return data;
