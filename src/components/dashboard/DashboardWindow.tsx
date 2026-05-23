@@ -156,7 +156,7 @@ export default function HeroDashboardSection() {
       color = 'rgba(230,162,60,1)'; // Orange warning
     }
 
-    let desc = `${found.category} biomarker is currently in the ${found.status.toLowerCase()} range.`;
+    let desc = found.explanation || `${found.category} biomarker is currently in the ${found.status.toLowerCase()} range.`;
     if (name.toLowerCase() === 'hba1c' && found.status === 'Borderline') {
       desc = 'Drifting upward compared with reference';
     } else if (name.toLowerCase() === 'vitamin d' && found.status === 'Low') {
@@ -196,7 +196,7 @@ export default function HeroDashboardSection() {
         value: `${b.value} ${b.unit}`,
         status: b.status,
         statusColor,
-        desc: `${b.category} biomarker`
+        desc: b.explanation || `${b.category} biomarker`
       };
     });
   };
@@ -453,22 +453,26 @@ export default function HeroDashboardSection() {
               </div>
 
               {/* Biomarker list */}
-              <div className="flex flex-col w-full gap-2">
+              <div className="flex flex-col w-full gap-3">
                 {getRenderBiomarkers().map((row, i) => (
                   <div 
                     key={i} 
                     className="w-full bg-white/[0.02] border border-white/5 rounded-lg hover:bg-white/[0.04] transition-colors"
-                    style={{ padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                    style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}
                   >
-                    <div className="flex-1">
-                      <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>{row.name}</div>
-                      <div className="flex flex-wrap items-center gap-2 mt-1">
-                        <span style={{ fontSize: '0.68rem', fontWeight: 600, color: row.statusColor, background: `${row.statusColor}1a`, padding: '2px 6px', borderRadius: '4px' }}>{row.status}</span>
-                        <span style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.45)' }}>{row.desc}</span>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'white' }}>{row.name}</span>
+                        <span style={{ fontSize: '0.65rem', fontWeight: 600, color: row.statusColor, background: `${row.statusColor}1a`, padding: '2px 6px', borderRadius: '4px' }}>
+                          {row.status}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'white' }}>
+                        {row.value}
                       </div>
                     </div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'white', textAlign: 'right', paddingLeft: '16px' }}>
-                      {row.value}
+                    <div style={{ fontSize: '0.76rem', color: 'rgba(255,255,255,0.6)', lineHeight: '1.45', wordBreak: 'break-word' }}>
+                      {row.desc}
                     </div>
                   </div>
                 ))}

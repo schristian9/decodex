@@ -16,6 +16,7 @@ export interface ParsedBiomarker {
   unit: string;
   status: 'Optimal' | 'Normal' | 'Borderline' | 'High' | 'Low';
   category: 'Metabolic' | 'Vitamins' | 'Lipids' | 'Thyroid' | 'Other';
+  explanation: string;
 }
 
 export interface ParsedReport {
@@ -34,7 +35,7 @@ export async function parseLabReport(pdfBuffer: Buffer): Promise<ParsedReport> {
     1. A concise plain-language summary of the patient's overall metabolic and general health based on their blood test results.
     2. A plain-language interpretation of what the results show, linking together related values (e.g. lipids, metabolic indicators, vitamin status) and explaining anomalies.
     3. Exactly 3 tailored, professional questions the patient should bring to their clinician based on their findings.
-    4. An array of individual biomarkers extracted from the report. For each biomarker, determine its category ('Metabolic', 'Vitamins', 'Lipids', 'Thyroid', or 'Other'), name, value, unit, and reference status ('Optimal', 'Normal', 'Borderline', 'High', or 'Low') based on standard reference ranges.
+    4. Exactly the 5 most clinically significant or abnormal findings from the report. For each of these 5 biomarkers, determine its category, name, value, unit, and reference status. Most importantly, provide a plain-language explanation of what this specific number means and why it matters to the patient's health.
 
     Be highly accurate. Do not invent biomarkers. Only extract what is explicitly found in the report.
   `;
@@ -85,9 +86,13 @@ export async function parseLabReport(pdfBuffer: Buffer): Promise<ParsedReport> {
                   type: 'string',
                   enum: ['Metabolic', 'Vitamins', 'Lipids', 'Thyroid', 'Other'],
                   description: 'The category this biomarker belongs to.'
+                },
+                explanation: {
+                  type: 'string',
+                  description: 'Plain-language explanation of what this number means and why it matters to the patient.'
                 }
               },
-              required: ['name', 'value', 'unit', 'status', 'category']
+              required: ['name', 'value', 'unit', 'status', 'category', 'explanation']
             }
           }
         },

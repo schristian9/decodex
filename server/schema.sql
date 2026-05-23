@@ -29,7 +29,8 @@ create table public.biomarkers (
   value text not null,
   unit text not null,
   status text not null, -- 'Optimal', 'Normal', 'Borderline', 'High', 'Low'
-  category text not null -- 'Metabolic', 'Vitamins', 'Lipids', 'Thyroid', 'Other'
+  category text not null, -- 'Metabolic', 'Vitamins', 'Lipids', 'Thyroid', 'Other'
+  explanation text -- Plain-language clinical explanation
 );
 
 -- Enable Row Level Security (RLS)

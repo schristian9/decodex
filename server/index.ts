@@ -197,7 +197,8 @@ app.post('/api/reports/upload', optionalAuth, upload.single('report'), async (re
       value: b.value,
       unit: b.unit,
       status: b.status,
-      category: b.category
+      category: b.category,
+      explanation: b.explanation
     }));
 
     const { error: biomarkerError } = await supabaseAdmin
