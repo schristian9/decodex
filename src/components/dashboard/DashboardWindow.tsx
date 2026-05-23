@@ -83,6 +83,9 @@ export default function HeroDashboardSection() {
     setLoading(true);
     setUploadProgress('Uploading report to secure storage...');
     
+    // Automatically scroll to the dashboard so the user can see the loading state
+    document.getElementById('dashboard-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
     try {
       const data = await api.reports.upload(file);
       setLatestReport(data.report);
@@ -202,6 +205,7 @@ export default function HeroDashboardSection() {
 
   return (
     <section 
+      id="dashboard-container"
       ref={containerRef}
       className="relative overflow-hidden w-full bg-transparent"
       style={{ padding: '80px 24px', isolation: 'isolate' }}

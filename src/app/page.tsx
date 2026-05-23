@@ -116,10 +116,6 @@ export default function HomePage() {
               if (uploadInput) {
                 // Trigger file picker IMMEDIATELY so the browser doesn't block it
                 uploadInput.click();
-                // Then scroll down asynchronously
-                setTimeout(() => {
-                  document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
               }
             }}
           >
@@ -329,10 +325,6 @@ export default function HomePage() {
                   if (uploadInput) {
                     // Trigger file picker IMMEDIATELY
                     uploadInput.click();
-                    // Scroll up asynchronously
-                    setTimeout(() => {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }, 100);
                   }
                 }}
               >
